@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "ecb.url",
+  "type": "java.lang.String",
+  "description": "URL to a currency RESTful service provided by ECB'"
+}]}

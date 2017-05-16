@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.norton.exchange.config.ApplicationProperties;
 import com.norton.exchange.currency.Currency;
 import com.norton.exchange.util.CurrencyConverter;
 
@@ -14,16 +15,17 @@ import com.norton.exchange.util.CurrencyConverter;
 public class CurrencyUploader {
 
 	@Autowired
-	private CurrencyConverter converter;
+	private ApplicationProperties applicationProperties;
 
-	private final String ECB_URL = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
+	@Autowired
+	private CurrencyConverter converter;
 
 	public Map<String, List<Currency>> uploadCurrencyDataFromECB() {
 
 		Map<String, List<Currency>> currenciesList;
 
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject(ECB_URL, String.class);
+		String result = restTemplate.getForObject(applicationProperties.getEcbUrl(), String.class);
 		currenciesList = converter.getCurrencyListFromECB(result);
 
 		return currenciesList;
