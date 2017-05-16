@@ -3,6 +3,7 @@ package com.norton.exchange.util;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,7 +29,7 @@ public class CurrencyConverter {
 	private static final String TIME_ATTRIBUTE = "time";
 
 	public static Map<String, List<Currency>> getCurrencyList(String xmlString) {
-		Map<String, List<Currency>> currencyMap = new TreeMap<>();
+		Map<String, List<Currency>> currencyMap = new TreeMap<>(Collections.reverseOrder());
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
