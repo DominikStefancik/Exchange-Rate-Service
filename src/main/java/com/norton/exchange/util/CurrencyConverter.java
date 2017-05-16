@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,14 +22,15 @@ import org.xml.sax.SAXException;
 
 import com.norton.exchange.currency.Currency;
 
+@Service
 public class CurrencyConverter {
 
-	private static final String CUBE_ELEMENT = "Cube";
-	private static final String CURRENCY_ATTRIBUTE = "currency";
-	private static final String RATE_ATTRIBUTE = "rate";
-	private static final String TIME_ATTRIBUTE = "time";
+	private static final String ECB_CUBE_ELEMENT = "Cube";
+	private static final String ECB_CURRENCY_ATTRIBUTE = "currency";
+	private static final String ECB_RATE_ATTRIBUTE = "rate";
+	private static final String ECB_TIME_ATTRIBUTE = "time";
 
-	public static Map<String, List<Currency>> getCurrencyList(String xmlString) {
+	public Map<String, List<Currency>> getCurrencyListFromECB(String xmlString) {
 		Map<String, List<Currency>> currencyMap = new TreeMap<>(Collections.reverseOrder());
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -39,22 +41,22 @@ public class CurrencyConverter {
 			inputSource.setCharacterStream(new StringReader(xmlString));
 			Document document = documentBuilder.parse(inputSource);
 
-			NodeList nodeList = document.getElementsByTagName(CUBE_ELEMENT);
+			NodeList nodeList = document.getElementsByTagName(ECB_CUBE_ELEMENT);
 			Node root = nodeList.item(0);
 
 			for (int i = 0; i < root.getChildNodes().getLength(); i++) {
 				Node node = root.getChildNodes().item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element child = (Element) node;
-					String time = child.getAttribute(TIME_ATTRIBUTE);
+					String time = child.getAttribute(ECB_TIME_ATTRIBUTE);
 					currencyMap.put(time, new ArrayList<>());
 
 					for (int j = 0; j < child.getChildNodes().getLength(); j++) {
 						Node currencyNode = child.getChildNodes().item(j);
 						if (currencyNode.getNodeType() == Node.ELEMENT_NODE) {
 							Element currencyChild = (Element) currencyNode;
-							String code = currencyChild.getAttribute(CURRENCY_ATTRIBUTE);
-							Double rate = Double.valueOf(currencyChild.getAttribute(RATE_ATTRIBUTE));
+							String code = currencyChild.getAttribute(ECB_CURRENCY_ATTRIBUTE);
+							Double rate = Double.valueOf(currencyChild.getAttribute(ECB_RATE_ATTRIBUTE));
 							currencyMap.get(time).add(new Currency(code, rate));
 						}
 					}

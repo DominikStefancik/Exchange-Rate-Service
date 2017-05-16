@@ -3,6 +3,7 @@ package com.norton.exchange.currency;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,16 +16,22 @@ import com.norton.exchange.validator.RequestParameterValidator;
 @RequestMapping("/currencies")
 public class CurrencyController {
 
+	@Autowired
+	RequestParameterValidator parameterValidator;
+
+	@Autowired
+	CurrencyCacheService cacheService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public Map<String, List<Currency>> getCurrenciesForAllDays() {
-		return CurrencyCache.getCache();
+		return cacheService.getCache();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{date}")
 	public List<Currency> getCurrenciesByDay(@PathVariable String date) throws Exception {
-		RequestParameterValidator.validateDateParameter(date);
+		parameterValidator.validateDateParameter(date);
 
-		List<Currency> currenciesByDay = CurrencyCache.getCache().get(date);
+		List<Currency> currenciesByDay = cacheService.getCache().get(date);
 
 		if (currenciesByDay == null) {
 			throw new DataNotFoundException("No currency data for the date " + date);
@@ -35,10 +42,10 @@ public class CurrencyController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{date}/{currency}")
 	public Currency getCurrency(@PathVariable String date, @PathVariable String currency) {
-		RequestParameterValidator.validateDateParameter(date);
-		RequestParameterValidator.validateCurrencyParameter(currency);
+		parameterValidator.validateDateParameter(date);
+		parameterValidator.validateCurrencyParameter(currency);
 
-		List<Currency> currenciesByDay = CurrencyCache.getCache().get(date);
+		List<Currency> currenciesByDay = cacheService.getCache().get(date);
 
 		if (currenciesByDay == null) {
 			throw new DataNotFoundException("No currency data for the date " + date);

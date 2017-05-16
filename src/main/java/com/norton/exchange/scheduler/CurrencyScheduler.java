@@ -6,22 +6,26 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.norton.exchange.currency.CurrencyCache;
+import com.norton.exchange.currency.CurrencyCacheService;
 
 @Component
-public class Scheduler {
+public class CurrencyScheduler {
 
-	private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
+	private final Logger logger = LoggerFactory.getLogger(CurrencyScheduler.class);
 
-	private static final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+	private final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+	@Autowired
+	private CurrencyCacheService cacheService;
 
 	@Scheduled(cron = "*/30 * * * * *")
 	public void updateCurrencyCache() {
 		logger.info("Updating currency cache");
-		CurrencyCache.updateCache();
+		cacheService.updateCache();
 		logger.info("Currency cache updated on: {}", dateFormat.format(new Date()));
 	}
 }
