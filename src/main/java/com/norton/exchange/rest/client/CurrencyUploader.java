@@ -11,6 +11,12 @@ import com.norton.exchange.config.ApplicationProperties;
 import com.norton.exchange.currency.Currency;
 import com.norton.exchange.util.CurrencyConverter;
 
+/**
+ * A class which calls RESTful services and returns data from them.
+ * 
+ * @author Dominik Stefancik
+ *
+ */
 @Service
 public class CurrencyUploader {
 
@@ -20,6 +26,11 @@ public class CurrencyUploader {
 	@Autowired
 	private CurrencyConverter converter;
 
+	/**
+	 * Calls a service provided by European Central Bank for currency data.
+	 * 
+	 * @return a map of currencies lists for different days
+	 */
 	public Map<String, List<Currency>> uploadCurrencyDataFromECB() {
 
 		Map<String, List<Currency>> currenciesList;

@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.norton.exchange.exception.DataNotFoundException;
 import com.norton.exchange.validator.RequestParameterValidator;
 
+/**
+ * A class handling RESTful requests for currency data.
+ * 
+ * @author Dominik Stefancik
+ *
+ */
 @RestController
 @RequestMapping("/currencies")
 public class CurrencyController {
@@ -29,7 +35,7 @@ public class CurrencyController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{date}")
 	public List<Currency> getCurrenciesByDay(@PathVariable String date) throws Exception {
-		parameterValidator.validateDateParameter(date);
+		parameterValidator.validateDateFormat(date);
 
 		List<Currency> currenciesByDay = cacheService.getCache().get(date);
 
@@ -42,8 +48,8 @@ public class CurrencyController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{date}/{currency}")
 	public Currency getCurrency(@PathVariable String date, @PathVariable String currency) {
-		parameterValidator.validateDateParameter(date);
-		parameterValidator.validateCurrencyParameter(currency);
+		parameterValidator.validateDateFormat(date);
+		parameterValidator.validateCurrencyFormat(currency);
 
 		List<Currency> currenciesByDay = cacheService.getCache().get(date);
 
@@ -51,10 +57,8 @@ public class CurrencyController {
 			throw new DataNotFoundException("No currency data for the date " + date);
 		}
 
-		return currenciesByDay.stream()
-													.filter(item -> item.getCurrency().equals(currency))
-													.findFirst()
-													.orElseThrow(() -> new DataNotFoundException(
-															String.format("No data for the currency " + currency)));
+		return currenciesByDay.stream().filter(
+				item -> item.getCurrency().equals(currency)).findFirst().orElseThrow(
+						() -> new DataNotFoundException(String.format("No data for the currency " + currency)));
 	}
 }

@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 
 import com.norton.exchange.currency.CurrencyCacheService;
 
+/**
+ * A class which periodically calls scheduled tasks operating on currency data.
+ * 
+ * @author Dominik Stefancik
+ *
+ */
 @Component
 public class CurrencyScheduler {
 
@@ -22,7 +28,11 @@ public class CurrencyScheduler {
 	@Autowired
 	private CurrencyCacheService cacheService;
 
-	@Scheduled(cron = "*/30 * * * * *")
+	/**
+	 * Periodically runs a task which updates the currency cache. The task is run every 3 hours.
+	 * 
+	 */
+	@Scheduled(cron = "* * */3 * * *")
 	public void updateCurrencyCache() {
 		logger.info("Updating currency cache");
 		cacheService.updateCache();

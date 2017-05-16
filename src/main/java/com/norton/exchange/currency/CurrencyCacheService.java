@@ -4,11 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.norton.exchange.rest.client.CurrencyUploader;
 
-@Component
+/**
+ * A class for accessing a cache of currency lists from various days.
+ * 
+ * @author Dominik Stefancik
+ *
+ */
+@Service
 public class CurrencyCacheService {
 
 	private Map<String, List<Currency>> cache;

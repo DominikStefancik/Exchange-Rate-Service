@@ -1,5 +1,11 @@
 package com.norton.exchange.currency;
 
+/**
+ * A class representing a currency model.
+ * 
+ * @author Dominik Stefancik
+ *
+ */
 public class Currency {
 
 	private String currency;
