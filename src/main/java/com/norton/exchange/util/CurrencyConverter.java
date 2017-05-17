@@ -31,10 +31,10 @@ import com.norton.exchange.currency.Currency;
 @Service
 public class CurrencyConverter {
 
-	private static final String ECB_CUBE_ELEMENT = "Cube";
-	private static final String ECB_CURRENCY_ATTRIBUTE = "currency";
-	private static final String ECB_RATE_ATTRIBUTE = "rate";
-	private static final String ECB_TIME_ATTRIBUTE = "time";
+	private final String ECB_CUBE_ELEMENT = "Cube";
+	private final String ECB_CURRENCY_ATTRIBUTE = "currency";
+	private final String ECB_RATE_ATTRIBUTE = "rate";
+	private final String ECB_TIME_ATTRIBUTE = "time";
 
 	/**
 	 * Converts currency data in XML format from European Central Bank into a map of {@link Currency}
