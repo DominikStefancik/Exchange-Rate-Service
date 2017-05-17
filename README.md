@@ -12,7 +12,7 @@ or
 
 * In the command line (or shell), go to the directory where the pom.xml file of the project resides. Then type
       
-      mvn build
+      mvn install
 
   If you want to run the application, type
 
