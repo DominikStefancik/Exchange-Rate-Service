@@ -29,10 +29,10 @@ public class CurrencyScheduler {
 	private CurrencyCacheService cacheService;
 
 	/**
-	 * Periodically runs a task which updates the currency cache. The task is run every 3 hours.
+	 * Periodically runs a task which updates the currency cache. The task is run every 30 minutes.
 	 * 
 	 */
-	@Scheduled(cron = "* * */3 * * *")
+	@Scheduled(cron = "* */30 * * * *")
 	public void updateCurrencyCache() {
 		logger.info("Updating currency cache");
 		cacheService.updateCache();
